@@ -11,7 +11,6 @@ The website is hosted at <a href="https://farmer-helper-v2.netlify.app/">Farmer 
 API <a href="https://price-predictor-api3.herokuapp.com/">Price Prediction</a> and [Backend](https://beta10-backend.herokuapp.com/)
 
 
-
 ## Features
 
 -   Weather Forecast: Humidity and Temperature Prediction.
@@ -47,33 +46,6 @@ API <a href="https://price-predictor-api3.herokuapp.com/">Price Prediction</a> a
 		MongoDB
 </p>
 
-## Contributors
-
-<p align="center">
-<a href="https://github.com/gg-dev-05">
-	<img src="https://github.com/gg-dev-05.png" width="50px">
-</a>
-
-<a href="https://github.com/kushaangowda">
-	<img src="https://github.com/kushaangowda.png" width="50px">
-</a>
-
-<a href="https://github.com/Anushk2001">
-	<img src="https://github.com/Anushk2001.png" width="50px">
-</a>
-
-<a href="https://github.com/lokeshkeelisetti">
-  	<img src="https://github.com/lokeshkeelisetti.png" width="50px">
-</a>
-
-</p>
-
-<p align="center">
-		<a href="https://github.com/gg-dev-05">Garvit Galgat</a> •
-    <a href="https://github.com/somyamehta24">Kushaan Gowda</a> •
-    <a href="https://github.com/Anushk2001">Anushk Gautam</a> •
-		<a href="https://github.com/lokeshkeelisetti">Keelisetti Lokesh</a>
-</p>
 
 ## Challenges we ran into
 We were having some issues with hosting our project, but after taking short breaks we managed to fix those issues.
