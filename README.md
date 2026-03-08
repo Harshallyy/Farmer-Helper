@@ -6,9 +6,9 @@ Suggestions can be based on their location, rainfall or current temperature.
 We will also give them various weather alerts to help then for various situations.
 
 ## Links
-The website is hosted at <a href="https://farmer-helper-v2.netlify.app/">Farmer Helper</a>
+The website is hosted at <a href="https://farmerhelper.netlify.app/">Farmer Helper</a>
   
-API <a href="https://price-predictor-api3.herokuapp.com/">Price Prediction</a> and [Backend](https://beta10-backend.herokuapp.com/)
+[Backend](https://farmer-helper-66kc.onrender.com/)
 
 
 ## Features
@@ -16,7 +16,6 @@ API <a href="https://price-predictor-api3.herokuapp.com/">Price Prediction</a> a
 -   Weather Forecast: Humidity and Temperature Prediction.
 -   Providing suggestions to farmer based on his location and weather conditions.
 -   Manage Orders and Inventories.
--   Price prediction for crops based on historical data.
 
 # Snapshots
 
@@ -38,16 +37,11 @@ API <a href="https://price-predictor-api3.herokuapp.com/">Price Prediction</a> a
 
 <p align="center"><b>BACKEND</b></p>
 <p align="center">
-		NodeJS, ExpressJS, Python Flask, Heroku
+		NodeJS, ExpressJS
 </p>
 
 <p align="center"><b>Database</b></p>
 <p align="center">
 		MongoDB
 </p>
-
-
-## Challenges we ran into
-We were having some issues with hosting our project, but after taking short breaks we managed to fix those issues.
-We were unable to find large datasets for training our machine learning models for price predictions.
 
