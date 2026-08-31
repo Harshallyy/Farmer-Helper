@@ -9,6 +9,12 @@ router.route("/").get((req, res) => {
 
 router.route("/checkUser").post((req, res) => {
 	const token = req.body.token;
+	if (!token) {
+	return res.status(400).json({
+		statusCode: 400,
+		message: "Token required"
+	});
+}
 	try {
 		jwt.verify(token, process.env.PRIVATE_KEY_FARMERS);
 		res.status(200).json({ statusCode: 200, user: "farmer" });
