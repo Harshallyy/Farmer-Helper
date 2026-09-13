@@ -1,245 +1,205 @@
-/*!
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
+import "./Sidebar.css";
 
-=========================================================
-* Argon Dashboard React - v1.2.1
-=========================================================
+function Sidebar({ routes, refresh, logo }) {
+  const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
+  const emitSidebarState = (nextState) => {
+    window.dispatchEvent(
+      new CustomEvent("fh:sidebar-state", { detail: { open: nextState } }),
+    );
+  };
 
-* Coded by Creative Tim
+  const closeSidebar = () => {
+    setMobileOpen(false);
+    emitSidebarState(false);
+  };
 
-=========================================================
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    refresh();
+    closeSidebar();
+  };
 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  useEffect(() => {
+    closeSidebar();
+  }, [location.pathname]);
 
-*/
-/*eslint-disable*/
-import { useState } from "react";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
-// nodejs library to set properties for components
-import { PropTypes } from "prop-types";
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 991) {
+        closeSidebar();
+      }
+    };
 
-// reactstrap components
-import {
-	Button,
-	Card,
-	CardHeader,
-	CardBody,
-	CardTitle,
-	Collapse,
-	DropdownMenu,
-	DropdownItem,
-	UncontrolledDropdown,
-	DropdownToggle,
-	FormGroup,
-	Form,
-	Input,
-	InputGroupAddon,
-	InputGroupText,
-	InputGroup,
-	Media,
-	NavbarBrand,
-	Navbar,
-	NavItem,
-	NavLink,
-	Nav,
-	Progress,
-	Table,
-	Container,
-	Row,
-	Col,
-} from "reactstrap";
+    window.addEventListener("resize", handleResize);
 
-var ps;
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
-const Sidebar = (props) => {
-	const [collapseOpen, setCollapseOpen] = useState();
-	// verifies if routeName is the one active (in browser input)
-	const activeRoute = (routeName) => {
-		return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
-	};
-	// toggles collapse between opened and closed (true/false)
-	const toggleCollapse = () => {
-		setCollapseOpen((data) => !data);
-	};
-	// closes the collapse
-	const closeCollapse = () => {
-		setCollapseOpen(false);
-	};
+  useEffect(() => {
+    const toggleSidebar = (event) => {
+      const forcedOpen =
+        event?.detail && typeof event.detail.open === "boolean"
+          ? event.detail.open
+          : undefined;
 
-	const handleLogout = () => {
-		localStorage.removeItem("token");
-		props.refresh();
-	};
+      setMobileOpen((prev) => {
+        const nextState = typeof forcedOpen === "boolean" ? forcedOpen : !prev;
+        emitSidebarState(nextState);
+        return nextState;
+      });
+    };
 
-	// creates the links that appear in the left menu / Sidebar
-	const createLinks = (routes) => {
-		return routes.map((prop, key) => {
-			if (prop.layout != "/auth")
-				return (
-					<NavItem key={key}>
-						<NavLink
-							to={prop.layout + prop.path}
-							tag={NavLinkRRD}
-							onClick={prop.path === "/logout" ? handleLogout : closeCollapse}
-							activeClassName="active"
-						>
-							<i className={prop.icon} />
-							{prop.name}
-						</NavLink>
-					</NavItem>
-				);
-			else return null;
-		});
-	};
+    const closeDrawer = () => closeSidebar();
 
-	const { bgColor, routes, logo } = props;
-	let navbarBrandProps;
-	if (logo && logo.innerLink) {
-		navbarBrandProps = {
-			to: logo.innerLink,
-			tag: Link,
-		};
-	} else if (logo && logo.outterLink) {
-		navbarBrandProps = {
-			href: logo.outterLink,
-			target: "_blank",
-		};
-	}
+    window.addEventListener("fh:toggle-sidebar", toggleSidebar);
+    window.addEventListener("fh:close-sidebar", closeDrawer);
 
-	return (
-		<Navbar className="navbar-vertical fixed-left navbar-light bg-white" expand="md" id="sidenav-main">
-			<Container fluid>
-				{/* Toggler */}
-				<button className="navbar-toggler" type="button" onClick={toggleCollapse}>
-					<span className="navbar-toggler-icon" />
-				</button>
-				{/* Brand */}
-				{logo ? (
-					<NavbarBrand className="pt-0" {...navbarBrandProps}>
-						<img alt={logo.imgAlt} className="navbar-brand-img" src={logo.imgSrc} />
-					</NavbarBrand>
-				) : null}
-				{/* User */}
-				<Nav className="align-items-center d-md-none">
-					<UncontrolledDropdown nav>
-						<DropdownToggle nav className="nav-link-icon">
-							<i className="ni ni-bell-55" />
-						</DropdownToggle>
-						<DropdownMenu aria-labelledby="navbar-default_dropdown_1" className="dropdown-menu-arrow" right>
-							<DropdownItem>Action</DropdownItem>
-							<DropdownItem>Another action</DropdownItem>
-							<DropdownItem divider />
-							<DropdownItem>Something else here</DropdownItem>
-						</DropdownMenu>
-					</UncontrolledDropdown>
-					<UncontrolledDropdown nav>
-						<DropdownToggle nav>
-							<Media className="align-items-center">
-								<span className="avatar avatar-sm rounded-circle">
-									<img alt="..." src={require("../../assets/img/theme/team-1-800x800.jpg").default} />
-								</span>
-							</Media>
-						</DropdownToggle>
-						<DropdownMenu className="dropdown-menu-arrow" right>
-							<DropdownItem className="noti-title" header tag="div">
-								<h6 className="text-overflow m-0">Welcome!</h6>
-							</DropdownItem>
-							<DropdownItem to="/admin/user-profile" tag={Link}>
-								<i className="ni ni-single-02" />
-								<span>My profile</span>
-							</DropdownItem>
-							<DropdownItem to="/admin/user-profile" tag={Link}>
-								<i className="ni ni-settings-gear-65" />
-								<span>Settings</span>
-							</DropdownItem>
-							<DropdownItem to="/admin/user-profile" tag={Link}>
-								<i className="ni ni-calendar-grid-58" />
-								<span>Activity</span>
-							</DropdownItem>
-							<DropdownItem to="/admin/user-profile" tag={Link}>
-								<i className="ni ni-support-16" />
-								<span>Support</span>
-							</DropdownItem>
-							<DropdownItem divider />
-							<DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
-								<i className="ni ni-user-run" />
-								<span>Logout</span>
-							</DropdownItem>
-						</DropdownMenu>
-					</UncontrolledDropdown>
-				</Nav>
-				{/* Collapse */}
-				<Collapse navbar isOpen={collapseOpen}>
-					{/* Collapse header */}
-					<div className="navbar-collapse-header d-md-none">
-						<Row>
-							{logo ? (
-								<Col className="collapse-brand" xs="6">
-									{logo.innerLink ? (
-										<Link to={logo.innerLink}>
-											<img alt={logo.imgAlt} src={logo.imgSrc} />
-										</Link>
-									) : (
-										<a href={logo.outterLink}>
-											<img alt={logo.imgAlt} src={logo.imgSrc} />
-										</a>
-									)}
-								</Col>
-							) : null}
-							<Col className="collapse-close" xs="6">
-								<button className="navbar-toggler" type="button" onClick={toggleCollapse}>
-									<span />
-									<span />
-								</button>
-							</Col>
-						</Row>
-					</div>
-					{/* Form */}
-					<Form className="mt-4 mb-3 d-md-none">
-						<InputGroup className="input-group-rounded input-group-merge">
-							<Input
-								aria-label="Search"
-								className="form-control-rounded form-control-prepended"
-								placeholder="Search"
-								type="search"
-							/>
-							<InputGroupAddon addonType="prepend">
-								<InputGroupText>
-									<span className="fa fa-search" />
-								</InputGroupText>
-							</InputGroupAddon>
-						</InputGroup>
-					</Form>
-					{/* Navigation */}
-					<Nav navbar>{createLinks(routes)}</Nav>
-				</Collapse>
-			</Container>
-		</Navbar>
-	);
-};
+    return () => {
+      window.removeEventListener("fh:toggle-sidebar", toggleSidebar);
+      window.removeEventListener("fh:close-sidebar", closeDrawer);
+    };
+  }, []);
 
-Sidebar.defaultProps = {
-	routes: [{}],
-};
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape" && mobileOpen) {
+        closeSidebar();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [mobileOpen]);
+
+  const getIcon = (route) => {
+    if (route.path === "/logout") return "fas fa-sign-out-alt";
+    if (route.path.includes("index")) return "fas fa-chart-line";
+    if (route.path.includes("order")) return "fas fa-shopping-cart";
+    if (route.path.includes("inventory")) return "fas fa-boxes";
+    if (route.path.includes("message")) return "fas fa-comments";
+    if (route.path.includes("profile")) return "fas fa-user";
+    if (route.path.includes("browse")) return "fas fa-store";
+    return "fas fa-circle";
+  };
+
+  return (
+    <>
+      {mobileOpen && (
+        <button
+          type="button"
+          className="fh-sidebar-overlay"
+          aria-label="Close navigation menu"
+          onClick={closeSidebar}
+        />
+      )}
+
+      <nav
+        className={`sidenav navbar navbar-vertical navbar-light fh-sidebar ${
+          mobileOpen ? "fh-sidebar-open" : ""
+        }`}
+        id="sidenav-main"
+        aria-label="Main navigation"
+      >
+        <div className="fh-sidebar-inner">
+          <div className="fh-sidebar-brand">
+            <Link
+              className="fh-brand"
+              to={logo.innerLink}
+              onClick={closeSidebar}
+            >
+              <span className="fh-brand-icon">
+                <i className="fas fa-seedling" />
+              </span>
+
+              <span className="fh-brand-text">Farmer Helper</span>
+            </Link>
+
+            <button
+              type="button"
+              className="fh-sidebar-close"
+              aria-label="Close navigation menu"
+              onClick={closeSidebar}
+            >
+              <i className="fas fa-xmark" />
+            </button>
+          </div>
+
+          <div className="fh-sidebar-divider" />
+
+          <div className="fh-sidebar-menu">
+            <ul className="navbar-nav">
+              {routes
+                .filter((route) => route.layout !== "/auth")
+                .map((route) => {
+                  const path = `${route.layout}${route.path}`;
+                  const isLogout = route.path === "/logout";
+                  const isActive = !isLogout && location.pathname === path;
+
+                  return (
+                    <li
+                      className={`nav-item ${isActive ? "active" : ""}`}
+                      key={`${route.layout}${route.path}`}
+                    >
+                      {isLogout ? (
+                        <button
+                          type="button"
+                          className="nav-link fh-nav-link fh-logout-link"
+                          onClick={handleLogout}
+                        >
+                          <span className="fh-nav-icon">
+                            <i className={getIcon(route)} />
+                          </span>
+
+                          <span className="nav-link-text">{route.name}</span>
+                        </button>
+                      ) : (
+                        <Link
+                          className="nav-link fh-nav-link"
+                          to={path}
+                          onClick={closeSidebar}
+                        >
+                          <span className="fh-nav-icon">
+                            <i className={getIcon(route)} />
+                          </span>
+
+                          <span className="nav-link-text">{route.name}</span>
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </>
+  );
+}
 
 Sidebar.propTypes = {
-	// links that will be displayed inside the component
-	routes: PropTypes.arrayOf(PropTypes.object),
-	logo: PropTypes.shape({
-		// innerLink is for links that will direct the user within the app
-		// it will be rendered as <Link to="...">...</Link> tag
-		innerLink: PropTypes.string,
-		// outterLink is for links that will direct the user outside the app
-		// it will be rendered as simple <a href="...">...</a> tag
-		outterLink: PropTypes.string,
-		// the image src of the logo
-		imgSrc: PropTypes.string.isRequired,
-		// the alt for the img
-		imgAlt: PropTypes.string.isRequired,
-	}),
+  routes: PropTypes.arrayOf(
+    PropTypes.shape({
+      layout: PropTypes.string.isRequired,
+      path: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+
+  refresh: PropTypes.func.isRequired,
+
+  logo: PropTypes.shape({
+    innerLink: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Sidebar;

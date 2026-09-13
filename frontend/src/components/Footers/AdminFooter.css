@@ -1,0 +1,23 @@
+.admin-footer {
+  min-height: 60px;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #7a857e;
+  background: #fff;
+  border-top: 1px solid #e9ecef;
+  font-size: 13px;
+}
+
+.admin-footer strong {
+  color: #198754;
+}
+
+@media (max-width: 600px) {
+  .admin-footer {
+    padding: 18px;
+    flex-direction: column;
+    gap: 6px;
+  }
+}

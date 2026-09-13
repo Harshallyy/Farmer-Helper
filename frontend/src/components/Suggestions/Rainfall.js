@@ -1,63 +1,46 @@
 import React from "react";
-import { Row, Col, CardHeader, Table, Card } from "reactstrap";
 import crops from "./crops.json";
-const Rainfall = ({ currentRainfall }) => {
-	currentRainfall = 250;
-	const suggestedCrops = [];
-	Object.keys(crops).forEach((crop) => {
-		if (crops[crop].min_rain <= currentRainfall && currentRainfall <= crops[crop].max_rain)
-			suggestedCrops.push(crop);
-	});
-	return (
-		<Col className="mb-xl-0 p-0" xl="">
-			<Card className="shadow p-4">
-				<CardHeader className="border-0">
-					<Row className="align-items-center">
-						<div className="col">
-							<h3 className="mb-0 text-center"></h3>
-						</div>
-					</Row>
-				</CardHeader>
-				<p>
-					<strong>Current Rainfall: {currentRainfall}cm</strong>
-				</p>
-				<Table className="align-items-center table-flush table-striped" responsive>
-					<thead>
-						<tr>
-							<th scope="col">Crop</th>
-							<th scope="col">Min Required Rainfall</th>
-							<th scope="col">Max Allowed Rainfall</th>
-						</tr>
-					</thead>
-					<tbody>
-						{suggestedCrops.length === 0 && (
-							<tr>
-								<td>Sorry No Suggestions :(</td>
-								<td> </td>
-								<td> </td>
-							</tr>
-						)}
-						{suggestedCrops.length > 0 &&
-							suggestedCrops.map((crop, index) => (
-								<tr key={index + "crop"}>
-									<td>{crop}</td>
-									<td>{crops[crop].min_rain}cm</td>
-									<td>{crops[crop].max_rain}cm</td>
-								</tr>
-							))}
-						{/* <tr>
-							<th scope="row">/argon/profile.html</th>
-							<td>1,795</td>
-							<td>190</td>
-							<td>
-								<i className="fas fa-arrow-down text-danger mr-3" /> 46,53%
-							</td>
-						</tr> */}
-					</tbody>
-				</Table>
-			</Card>
-		</Col>
-	);
-};
+
+function Rainfall() {
+  const currentRainfall = 250;
+
+  const suitableCrops = crops.filter(
+    (crop) =>
+      currentRainfall >= crop.minRainfall &&
+      currentRainfall <= crop.maxRainfall,
+  );
+
+  return (
+    <div>
+      <h4 className="mb-3">Crops suitable for current rainfall</h4>
+
+      <p className="text-muted">
+        Current Rainfall: <strong>{currentRainfall} mm</strong>
+      </p>
+
+      {suitableCrops.length > 0 ? (
+        <div className="row">
+          {suitableCrops.map((crop) => (
+            <div className="col-md-4 mb-3" key={crop.name}>
+              <div className="card border-0 shadow-sm h-100">
+                <div className="card-body">
+                  <h5 className="card-title">{crop.name}</h5>
+                  <p className="card-text text-muted mb-0">
+                    Required rainfall: {crop.minRainfall} - {crop.maxRainfall}{" "}
+                    mm
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-muted">
+          No suitable crops found for the current rainfall.
+        </p>
+      )}
+    </div>
+  );
+}
 
 export default Rainfall;

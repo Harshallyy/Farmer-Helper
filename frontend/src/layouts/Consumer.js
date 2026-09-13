@@ -5,9 +5,9 @@ import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
-import { farmerRoutes } from "routes.js";
+import { consumerRoutes } from "routes.js";
 
-function Admin({ refresh }) {
+function Consumer({ refresh }) {
   const mainContent = useRef(null);
   const location = useLocation();
 
@@ -24,8 +24,8 @@ function Admin({ refresh }) {
   }, [location]);
 
   const getRoutes = () =>
-    farmerRoutes
-      .filter((route) => route.layout === "/farmer" && route.component)
+    consumerRoutes
+      .filter((route) => route.layout === "/consumer" && route.component)
       .map((route) => (
         <Route
           key={route.path}
@@ -35,9 +35,9 @@ function Admin({ refresh }) {
       ));
 
   const getBrandText = (pathname) => {
-    const match = farmerRoutes.find(
+    const match = consumerRoutes.find(
       (route) =>
-        route.layout === "/farmer" &&
+        route.layout === "/consumer" &&
         pathname.startsWith(route.layout + route.path),
     );
 
@@ -47,10 +47,10 @@ function Admin({ refresh }) {
   return (
     <>
       <Sidebar
-        routes={farmerRoutes}
+        routes={consumerRoutes}
         refresh={refresh}
         logo={{
-          innerLink: "/farmer/index",
+          innerLink: "/consumer/index",
         }}
       />
 
@@ -62,7 +62,7 @@ function Admin({ refresh }) {
 
         <Routes>
           {getRoutes()}
-          <Route path="*" element={<Navigate to="/farmer/index" replace />} />
+          <Route path="*" element={<Navigate to="/consumer/index" replace />} />
         </Routes>
 
         <div className="container-fluid">
@@ -73,4 +73,4 @@ function Admin({ refresh }) {
   );
 }
 
-export default Admin;
+export default Consumer;

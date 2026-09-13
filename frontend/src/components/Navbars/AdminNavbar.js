@@ -1,110 +1,185 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import { Link } from "react-router-dom";
-// reactstrap components
-import {
-	DropdownMenu,
-	DropdownItem,
-	UncontrolledDropdown,
-	DropdownToggle,
-	Form,
-	FormGroup,
-	InputGroupAddon,
-	InputGroupText,
-	Input,
-	InputGroup,
-	Navbar,
-	Nav,
-	Container,
-	Media,
-} from "reactstrap";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import {
+  Navbar,
+  Container,
+  Nav,
+  NavItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Media,
+} from "reactstrap";
 
 import { BASE_URL } from "Common/Constants";
+import { getErrorMessage } from "Common/api";
 
-const AdminNavbar = (props) => {
-	const [username, setUsername] = useState("");
+import "./AdminNavbar.css";
 
-	useEffect(async () => {
-		const url = BASE_URL + "farmer/details";
-		const res = await axios.get(url, {
-			headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-		});
-		if (res.data.statusCode == 200) {
-			setUsername(res.data.result.username);
-		}
-	}, []);
+function AdminNavbar({ brandText, refresh }) {
+  const [username, setUsername] = useState("User");
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const location = useLocation();
 
-	const handleLogout = () => {
-		localStorage.removeItem("token");
-		props.refresh();
-	};
+  const role = location.pathname.startsWith("/consumer")
+    ? "consumer"
+    : "farmer";
 
-	return (
-		<>
-			<Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
-				<Container fluid>
-					<p className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block">{props.brandText}</p>
-					{/*<Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-						<FormGroup className="mb-0">
-							<InputGroup className="input-group-alternative">
-								<InputGroupAddon addonType="prepend">
-									<InputGroupText>
-										<i className="fas fa-search" />
-									</InputGroupText>
-								</InputGroupAddon>
-								<Input placeholder="Search" type="text" />
-							</InputGroup>
-						</FormGroup>
-					</Form>*/}
-					<Nav className="align-items-center d-none d-md-flex" navbar>
-						<UncontrolledDropdown nav>
-							<DropdownToggle className="pr-0" nav>
-								<Media className="align-items-center">
-									<span className="avatar avatar-sm rounded-circle">
-										<img alt="..." src={require("../../assets/img/theme/person.jpg").default} />
-									</span>
-									<Media className="ml-2 d-none d-lg-block">
-										<span className="mb-0 text-sm font-weight-bold">{username}</span>
-									</Media>
-								</Media>
-							</DropdownToggle>
-							<DropdownMenu className="dropdown-menu-arrow" right>
-								<DropdownItem className="noti-title" header tag="div">
-									<h6 className="text-overflow m-0">Welcome!</h6>
-								</DropdownItem>
-								<DropdownItem to="/farmer/user-profile" tag={Link}>
-									<i className="ni ni-single-02" />
-									<span>My profile</span>
-								</DropdownItem>
-								<DropdownItem divider />
-								<DropdownItem href="/logout" onClick={handleLogout}>
-									<i className="ni ni-user-run" />
-									<span>Logout</span>
-								</DropdownItem>
-							</DropdownMenu>
-						</UncontrolledDropdown>
-					</Nav>
-				</Container>
-			</Navbar>
-		</>
-	);
-};
+  useEffect(() => {
+    let mounted = true;
+
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}${role}/details`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        if (mounted && response.data?.statusCode === 200) {
+          setUsername(response.data?.result?.username || "User");
+        }
+      } catch (error) {
+        if (mounted) {
+          setUsername("User");
+          console.error(getErrorMessage(error));
+        }
+      }
+    };
+
+    fetchUser();
+
+    return () => {
+      mounted = false;
+    };
+  }, [role]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    refresh();
+  };
+
+  useEffect(() => {
+    const syncMobileOpen = (event) => {
+      const nextState =
+        event?.detail && typeof event.detail.open === "boolean"
+          ? event.detail.open
+          : false;
+
+      setMobileSidebarOpen(nextState);
+    };
+
+    const closeMobile = () => setMobileSidebarOpen(false);
+
+    window.addEventListener("fh:sidebar-state", syncMobileOpen);
+    window.addEventListener("fh:close-sidebar", closeMobile);
+
+    return () => {
+      window.removeEventListener("fh:sidebar-state", syncMobileOpen);
+      window.removeEventListener("fh:close-sidebar", closeMobile);
+    };
+  }, []);
+
+  const openMobileSidebar = () => {
+    const nextState = !mobileSidebarOpen;
+    setMobileSidebarOpen(nextState);
+    window.dispatchEvent(
+      new CustomEvent("fh:toggle-sidebar", { detail: { open: nextState } }),
+    );
+  };
+
+  const closeMobileSidebar = () => {
+    setMobileSidebarOpen(false);
+    window.dispatchEvent(new CustomEvent("fh:close-sidebar"));
+  };
+
+  return (
+    <Navbar
+      className="navbar-top fh-admin-navbar"
+      expand={false}
+      id="navbar-main"
+    >
+      <Container fluid>
+        {/* Desktop page title */}
+        <Link className="fh-navbar-title" to={`/${role}/index`}>
+          <span className="fh-navbar-title-icon">
+            <i className="fas fa-seedling" />
+          </span>
+
+          <span>{brandText}</span>
+        </Link>
+
+        {/* Mobile brand */}
+        <Link
+          className="fh-mobile-brand"
+          to={`/${role}/index`}
+          onClick={closeMobileSidebar}
+        >
+          <span className="fh-mobile-brand-icon">
+            <i className="fas fa-seedling" />
+          </span>
+
+          <span>Farmer Helper</span>
+        </Link>
+
+        {/* Desktop user */}
+        <Nav className="align-items-center ml-auto" navbar>
+          <div className="d-none d-lg-block">
+            <UncontrolledDropdown nav>
+              <DropdownToggle className="pr-0" nav>
+                <Media className="align-items-center">
+                  <span className="avatar avatar-sm rounded-circle">
+                    <img
+                      alt="Profile"
+                      src={require("../../assets/img/theme/person.jpg")}
+                    />
+                  </span>
+
+                  <Media className="ml-2">
+                    <span className="mb-0 text-sm font-weight-bold fh-navbar-user">
+                      {username}
+                    </span>
+                  </Media>
+                </Media>
+              </DropdownToggle>
+
+              <DropdownMenu end>
+                <DropdownItem to={`/${role}/user-profile`} tag={Link}>
+                  <i className="ni ni-single-02" />
+                  <span>My profile</span>
+                </DropdownItem>
+
+                <DropdownItem divider />
+
+                <DropdownItem onClick={handleLogout}>
+                  <i className="ni ni-user-run" />
+                  <span>Logout</span>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
+        </Nav>
+
+        {/* Mobile hamburger */}
+        <button
+          type="button"
+          className="fh-mobile-sidebar-btn"
+          aria-label={
+            mobileSidebarOpen ? "Close navigation menu" : "Open navigation menu"
+          }
+          aria-expanded={mobileSidebarOpen}
+          aria-controls="sidenav-main"
+          onClick={openMobileSidebar}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </Container>
+    </Navbar>
+  );
+}
 
 export default AdminNavbar;

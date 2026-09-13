@@ -1,94 +1,71 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
-import { useLocation, Route, Switch, Redirect } from "react-router-dom";
-// reactstrap components
-import { Container, Row, Col } from "reactstrap";
+import { useLocation, Routes, Route, Navigate } from "react-router-dom";
 
-// core components
 import AuthNavbar from "components/Navbars/AuthNavbar";
 import AuthFooter from "components/Footers/AuthFooter";
 
 import Register from "views/examples/Register";
 import Login from "views/examples/Login";
 
-const Auth = (props) => {
-	const mainContent = React.useRef(null);
-	const location = useLocation();
+import "../views/examples/Auth.css";
 
-	React.useEffect(() => {
-		document.body.classList.add("bg-default");
-		return () => {
-			document.body.classList.remove("bg-default");
-		};
-	}, []);
-	React.useEffect(() => {
-		document.documentElement.scrollTop = 0;
-		document.scrollingElement.scrollTop = 0;
-		mainContent.current.scrollTop = 0;
-	}, [location]);
+const Auth = ({ refresh }) => {
+  const mainContent = React.useRef(null);
+  const location = useLocation();
 
-	return (
-		<>
-			<div className="main-content" ref={mainContent}>
-				<AuthNavbar />
-				<div className="header bg-gradient-info py-7 py-lg-8">
-					<Container>
-						<div className="header-body text-center mb-7">
-							<Row className="justify-content-center">
-								<Col lg="5" md="6">
-									<h1 className="text-white">Welcome!</h1>
-									<p className="text-lead text-white">A Portal to help the farmers</p>
-								</Col>
-							</Row>
-						</div>
-					</Container>
-					<div className="separator separator-bottom separator-skew zindex-100">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							preserveAspectRatio="none"
-							version="1.1"
-							viewBox="0 0 2560 100"
-							x="0"
-							y="0"
-						>
-							<polygon className="fill-default" points="2560 0 2560 100 0 100" />
-						</svg>
-					</div>
-				</div>
-				{/* Page content */}
-				<Container className="mt--8 pb-5">
-					<Row className="justify-content-center">
-						<Switch>
-							<Route path="/auth/register">
-								<Register />
-							</Route>
-							<Route path="/auth/login">
-								<Login refresh={props.refresh} />
-							</Route>
-							<Redirect from="*" to="/auth/login" />
-						</Switch>
-					</Row>
-				</Container>
-			</div>
-			<AuthFooter />
-		</>
-	);
+  React.useEffect(() => {
+    document.body.classList.add("bg-default");
+
+    return () => {
+      document.body.classList.remove("bg-default");
+    };
+  }, []);
+
+  React.useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    if (document.scrollingElement) {
+      document.scrollingElement.scrollTop = 0;
+    }
+
+    if (mainContent.current) {
+      mainContent.current.scrollTop = 0;
+    }
+  }, [location]);
+
+  return (
+    <div className="auth-page" ref={mainContent}>
+      <AuthNavbar />
+
+      <main className="auth-main">
+        <div className="auth-hero">
+          <div className="auth-hero-content">
+            <span className="auth-eyebrow">
+              <i className="fas fa-seedling" />
+              Farmer Helper
+            </span>
+
+            <h1>Welcome to Farmer Helper</h1>
+
+            <p>A single portal connecting farmers and consumers directly.</p>
+          </div>
+        </div>
+
+        <section className="auth-content" aria-label="Authentication">
+          <div className="auth-card-container">
+            <Routes>
+              <Route path="register" element={<Register />} />
+              <Route path="login" element={<Login refresh={refresh} />} />
+              <Route path="*" element={<Navigate to="/auth/login" replace />} />
+            </Routes>
+          </div>
+        </section>
+      </main>
+
+      <footer className="auth-footer">
+        <AuthFooter />
+      </footer>
+    </div>
+  );
 };
 
 export default Auth;

@@ -1,0 +1,122 @@
+.fh-admin-navbar {
+  position: sticky !important;
+  top: 0;
+  z-index: 1020;
+  min-height: 68px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 10px 30px rgba(35, 55, 75, 0.06);
+}
+
+.fh-navbar-title,
+.fh-mobile-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  line-height: 1;
+  text-decoration: none !important;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+.fh-navbar-title {
+  color: #344957 !important;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.fh-navbar-title-icon,
+.fh-mobile-brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: rgba(75, 137, 164, 0.10);
+  color: #4b89a4;
+  line-height: 1;
+}
+
+.fh-navbar-title-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 14px;
+}
+
+.fh-mobile-brand {
+  display: none;
+  color: #344957 !important;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.fh-mobile-brand-icon {
+  width: 36px;
+  height: 36px;
+  font-size: 15px;
+}
+
+.fh-navbar-user {
+  color: #526875;
+}
+
+.fh-mobile-sidebar-btn {
+  display: none;
+  width: 43px;
+  height: 43px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: 0 8px 24px rgba(35, 55, 75, 0.08);
+  cursor: pointer;
+}
+
+.fh-mobile-sidebar-btn span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 99px;
+  background: #536b77;
+}
+
+.fh-mobile-sidebar-btn:hover {
+  background: rgba(255, 255, 255, 0.82);
+}
+
+@media (max-width: 991.98px) {
+  .fh-admin-navbar {
+    min-height: 62px;
+    padding: 8px 14px !important;
+  }
+
+  .fh-navbar-title {
+    display: none;
+  }
+
+  .fh-mobile-brand {
+    display: inline-flex;
+    max-width: calc(100% - 72px);
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .fh-mobile-brand > span:last-child {
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .fh-mobile-sidebar-btn {
+    display: flex;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+}

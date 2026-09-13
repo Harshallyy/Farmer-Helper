@@ -1,53 +1,27 @@
-/*!
+import React from "react";
 
-=========================================================
-* Argon Dashboard React - v1.2.1
-=========================================================
+function UserHeader({ username }) {
+  return (
+    <div className="fh-user-header">
+      <div className="container-fluid">
+        <div className="fh-user-header-inner">
+          <div className="fh-user-header-icon">
+            <i className="fas fa-user" />
+          </div>
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
-// reactstrap components
-import { Button, Container, Row, Col } from "reactstrap";
-
-const UserHeader = ({ username }) => {
-	return (
-		<>
-			<div
-				className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-				style={{
-					minHeight: "600px",
-					backgroundImage: "url(https://wallpapercave.com/wp/wp1987046.jpg)",
-					backgroundSize: "cover",
-					backgroundPosition: "center top",
-				}}
-			>
-				{/* Mask */}
-				<span className="mask bg-gradient-default opacity-8" />
-				{/* Header container */}
-				<Container className="d-flex align-items-center" fluid>
-					<Row>
-						<Col lg="7" md="10">
-							<h1 className="display-2 text-white">Hello {username}</h1>
-							<p className="text-white mt-0 mb-5">
-								This is your profile page. You can see the progress you've made with your work and
-								manage your assets
-							</p>
-						</Col>
-					</Row>
-				</Container>
-			</div>
-		</>
-	);
-};
+          <div>
+            <p className="fh-user-header-kicker">Profile</p>
+            <h1 className="fh-user-header-title">
+              Hello {username || "there"}
+            </h1>
+            <p className="fh-user-header-copy">
+              Manage your Farmer Helper account and saved preferences from here.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default UserHeader;

@@ -1,86 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
+import { Nav, NavItem, NavLink } from "reactstrap";
 import classnames from "classnames";
+
 import Temperature from "./Temperature";
 import Rainfall from "./Rainfall";
 import Location from "./Location";
-// reactstrap components
-import { Card, CardBody, NavItem, NavLink, Nav, TabContent, TabPane, CardHeader, Row } from "reactstrap";
 
-class Navs extends React.Component {
-	state = {
-		navPills: 1,
-	};
-	toggleNavs = (e, state, index) => {
-		e.preventDefault();
-		this.setState({
-			[state]: index,
-		});
-	};
-	render() {
-		return (
-			<>
-				<CardHeader className="border-0 mt-5">
-					<Row className="align-items-center">
-						<div className="col">
-							<h3 className="mb-0 text-center"> Suggestions</h3>
-						</div>
-					</Row>
-				</CardHeader>
-				<Nav className="nav-fill flex-column flex-sm-row" id="tabs-text" pills role="tablist">
-					<NavItem>
-						<NavLink
-							aria-selected={this.state.navPills === 1}
-							className={classnames("mb-sm-3 mb-md-0", {
-								active: this.state.navPills === 1,
-							})}
-							onClick={(e) => this.toggleNavs(e, "navPills", 1)}
-							role="tab"
-							style={{ cursor: "pointer" }}
-						>
-							Temperature
-						</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink
-							aria-selected={this.state.navPills === 2}
-							className={classnames("mb-sm-3 mb-md-0", {
-								active: this.state.navPills === 2,
-							})}
-							onClick={(e) => this.toggleNavs(e, "navPills", 2)}
-							role="tab"
-							style={{ cursor: "pointer" }}
-						>
-							Rainfall
-						</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink
-							aria-selected={this.state.navPills === 3}
-							className={classnames("mb-sm-3 mb-md-0", {
-								active: this.state.navPills === 3,
-							})}
-							onClick={(e) => this.toggleNavs(e, "navPills", 3)}
-							role="tab"
-							style={{ cursor: "pointer" }}
-						>
-							Location
-						</NavLink>
-					</NavItem>
-				</Nav>
-				{this.state.navPills === 1 && <Temperature currentTemperature={this.props.data.current.temp_c} />}
-				{this.state.navPills === 2 && <Rainfall currentRainfall={this.props.data.current.precip_mm * 0.1} />}
-				{this.state.navPills === 3 && <Location />}
-			</>
-		);
-	}
+function Suggestions() {
+  const [activeTab, setActiveTab] = useState("temperature");
+
+  const toggleTab = (tab) => {
+    if (activeTab !== tab) {
+      setActiveTab(tab);
+    }
+  };
+
+  return (
+    <div className="card shadow mt-4">
+      <div className="card-header bg-transparent">
+        <div className="row align-items-center">
+          <div className="col">
+            <h3 className="mb-0">Farming Suggestions</h3>
+          </div>
+
+          <div className="col-auto">
+            <Nav tabs>
+              <NavItem>
+                <NavLink
+                  className={classnames({
+                    active: activeTab === "temperature",
+                  })}
+                  onClick={() => toggleTab("temperature")}
+                >
+                  Temperature
+                </NavLink>
+              </NavItem>
+
+              <NavItem>
+                <NavLink
+                  className={classnames({
+                    active: activeTab === "rainfall",
+                  })}
+                  onClick={() => toggleTab("rainfall")}
+                >
+                  Rainfall
+                </NavLink>
+              </NavItem>
+
+              <NavItem>
+                <NavLink
+                  className={classnames({
+                    active: activeTab === "location",
+                  })}
+                  onClick={() => toggleTab("location")}
+                >
+                  Location
+                </NavLink>
+              </NavItem>
+            </Nav>
+          </div>
+        </div>
+      </div>
+
+      <div className="card-body">
+        {activeTab === "temperature" && <Temperature />}
+        {activeTab === "rainfall" && <Rainfall />}
+        {activeTab === "location" && <Location />}
+      </div>
+    </div>
+  );
 }
 
-export default Navs;
-// import Temperature from "./Temperature"
-// const Suggestions = () => {
-// 	return (
-// 		<Temperature />
-// 	)
-// }
-
-// export default Suggestions
+export default Suggestions;
