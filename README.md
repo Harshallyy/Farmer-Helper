@@ -1,21 +1,30 @@
 <img src="https://farmer-helper-v2.netlify.app/static/media/argon-react.99ed0daa.png" />
 
-# Beta 10 - Status402
+# Farmer Helper (2026)
+
 This webapp aims at helping farmers to make more informed decisions regarding their harvesting patterns and giving them various suggestions based on their location.
 Suggestions can be based on their location, rainfall or current temperature.
-We will also give them various weather alerts to help then for various situations.
+We also provide weather alerts and forecast insights to help farmers plan for changing conditions.
+
+## Frontend weather configuration
+
+The forecast UI uses WeatherAPI on the frontend. Create or update the frontend/.env file with a valid key as follows:
+
+REACT_APP_API_KEY=YOUR_WEATHER_API_KEY_FROM_WEATHERAPI
+
+Do not commit a real API key into source control. If the variable is missing, blank, or invalid, the weather section will fail gracefully with a clear message instead of breaking the dashboard.
 
 ## Links
-The website is hosted at <a href="https://farmerhelper.netlify.app/">Farmer Helper</a>
-  
-[Backend](https://farmer-helper-66kc.onrender.com/)
 
+The website is hosted at <a href="https://farmerhelper.netlify.app/">Farmer Helper</a>
+
+[Backend](https://farmer-helper-66kc.onrender.com/)
 
 ## Features
 
--   Weather Forecast: Humidity and Temperature Prediction.
--   Providing suggestions to farmer based on his location and weather conditions.
--   Manage Orders and Inventories.
+- Weather Forecast: Humidity and Temperature Prediction.
+- Providing suggestions to farmer based on his location and weather conditions.
+- Manage Orders and Inventories.
 
 # Snapshots
 
@@ -44,4 +53,3 @@ The website is hosted at <a href="https://farmerhelper.netlify.app/">Farmer Help
 <p align="center">
 		MongoDB
 </p>
-

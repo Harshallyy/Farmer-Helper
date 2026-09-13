@@ -2,11 +2,28 @@ import React from "react";
 import { Row, Col, CardHeader, Table, Card } from "reactstrap";
 import crops from "./crops.json";
 
+function getCropEntries(rawCrops) {
+  if (!rawCrops || typeof rawCrops !== "object") {
+    return [];
+  }
+
+  if (Array.isArray(rawCrops)) {
+    return rawCrops.filter((crop) => crop && typeof crop === "object");
+  }
+
+  return Object.entries(rawCrops).filter(
+    ([, crop]) => crop && typeof crop === "object",
+  );
+}
+
 function Location() {
   const currentLocation = "Madhya Pradesh";
+  const cropEntries = getCropEntries(crops);
 
-  const suggestedCrops = Object.entries(crops).filter(([, crop]) =>
-    crop.locations.includes(currentLocation),
+  const suggestedCrops = cropEntries.filter(
+    ([, crop]) =>
+      Array.isArray(crop?.locations) &&
+      crop.locations.includes(currentLocation),
   );
 
   return (

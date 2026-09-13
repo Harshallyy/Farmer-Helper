@@ -1,10 +1,12 @@
 import React from "react";
 import crops from "./crops.json";
+import { normalizeCropData } from "./Temperature";
 
 function Rainfall() {
   const currentRainfall = 250;
+  const normalizedCrops = normalizeCropData(crops);
 
-  const suitableCrops = crops.filter(
+  const suitableCrops = normalizedCrops.filter(
     (crop) =>
       currentRainfall >= crop.minRainfall &&
       currentRainfall <= crop.maxRainfall,
