@@ -1,5 +1,3 @@
-<img src="https://farmer-helper-v2.netlify.app/static/media/argon-react.99ed0daa.png" />
-
 # Farmer Helper (2026)
 
 This webapp aims at helping farmers to make more informed decisions regarding their harvesting patterns and giving them various suggestions based on their location.
