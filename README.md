@@ -16,7 +16,7 @@ Do not commit a real API key into source control. If the variable is missing, bl
 
 The website is hosted at <a href="https://farmerhelper.netlify.app/">Farmer Helper</a>
 
-[Backend](https://farmer-helper-66kc.onrender.com/)
+[Backend](https://farmer-helper-a8io.onrender.com/)
 
 ## Features
 
@@ -26,14 +26,13 @@ The website is hosted at <a href="https://farmerhelper.netlify.app/">Farmer Help
 
 # Snapshots
 
-![Screenshot (433)](https://user-images.githubusercontent.com/72788557/139569135-43a6400c-4672-49d4-b9a7-60d5de807f34.png)
-![Screenshot (461)](https://user-images.githubusercontent.com/72788557/139571224-6ea11b35-52ff-45bd-873b-109184f0a01d.png)
-![Screenshot (439)](https://user-images.githubusercontent.com/72788557/139569268-a26d76d9-fb4b-4e2e-aaab-9020bf6af481.png)
-![Screenshot (442)](https://user-images.githubusercontent.com/72788557/139569281-935b3208-7e41-453e-b174-5712f46d0590.png)
-![Screenshot (444)](https://user-images.githubusercontent.com/72788557/139569293-4cef9127-d645-4628-b955-4ff469fb2368.png)
-![Screenshot (449)](https://user-images.githubusercontent.com/72788557/139569311-f686e47a-6206-423c-8868-d1b1ff80eaf9.png)
-![Screenshot (453)](https://user-images.githubusercontent.com/72788557/139569317-6cd27dbd-fb12-4785-b49e-39d9f2907628.png)
-![Screenshot (456)](https://user-images.githubusercontent.com/72788557/139569322-721fef7a-9256-49b9-bdbb-3b99b5b47f6b.png)
+<img width="1918" height="957" alt="Screenshot 2026-09-14 202718" src="https://github.com/user-attachments/assets/a83cb310-92ec-4f44-8c86-529c17c0542f" />
+
+<img width="1913" height="967" alt="Screenshot 2026-09-14 202700" src="https://github.com/user-attachments/assets/ef7ed1a0-8c8e-426c-a521-7de92056dc2d" />
+
+<img width="1912" height="971" alt="Screenshot 2026-09-14 202856" src="https://github.com/user-attachments/assets/a1805b61-7662-40eb-beb5-f4b38ecfb2cb" />
+
+<img width="1910" height="965" alt="Screenshot 2026-09-14 202828" src="https://github.com/user-attachments/assets/c279a59a-9b12-4472-909e-736777f6d128" />
 
 ## Tech Stack
 
